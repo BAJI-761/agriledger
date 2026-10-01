@@ -42,3 +42,41 @@ export function ipfsGatewayUrl(cid: string): string {
   }
   return `https://ipfs.io/ipfs/${cid}`;
 }
+
+/**
+ * Upload a file to IPFS via the backend proxy
+ */
+export async function uploadFile(file: File): Promise<{ cid: string; size: number; name: string }> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || "Failed to upload file");
+  }
+
+  return res.json();
+}
+
+/**
+ * Upload a JSON object to IPFS via the backend proxy
+ */
+export async function uploadJson(data: Record<string, any>): Promise<{ cid: string; size: number }> {
+  const res = await fetch("/api/upload-json", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const resData = await res.json().catch(() => ({}));
+    throw new Error(resData.error || "Failed to upload JSON");
+  }
+
+  return res.json();
+}

@@ -3,10 +3,17 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  envDir: "..",
   plugins: [react(), tailwindcss()],
   server: {
     port: 5173,
     open: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      }
+    }
   },
   build: {
     outDir: "dist",

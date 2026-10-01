@@ -1,5 +1,5 @@
 import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Sprout, FlaskConical, Warehouse, ShieldCheck, LogOut, Wallet } from "lucide-react";
 import { publicClient } from "../lib/chainClient";
@@ -11,7 +11,7 @@ export default function Portal() {
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
-  const navigate = useNavigate();
+
   const [roles, setRoles] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -47,7 +47,9 @@ export default function Portal() {
             args: [roleHash, address],
           }) as boolean;
           if (has) found.push(label);
-        } catch {}
+        } catch (e) {
+          console.error(`Failed to check role ${label}:`, e);
+        }
       }
       setRoles(found);
       setLoading(false);

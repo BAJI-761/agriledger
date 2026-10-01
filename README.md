@@ -1,104 +1,94 @@
 # 🌱 AgriLedger
 
-**Know the field your food came from.**
+AgriLedger is a decentralized application (dApp) built to track organic produce from the farm to the consumer. By leveraging blockchain technology (Polygon) and decentralized storage (IPFS), it provides an immutable, transparent, and verifiable supply chain history for every single batch of crops.
 
-Farm-to-Fork Transparent Organic Produce Provenance DApp — built for Hackathon PS-018 (Cybersecurity & Blockchain).
+## Features
 
-## Problem
+- **Role-Based Portals**: Dedicated dashboards for Farmers, Labs, and Admins.
+- **Immutable Evidence**: Farm photos and Lab PDF certificates are uploaded to IPFS and their CIDs are permanently bound to the blockchain record.
+- **Consumer Transparency**: Anyone can enter a Batch ID on the public portal to trace the crop's journey and view original lab certifications.
+- **Circuit Breaker**: Emergency pause functionality for the smart contract, controllable only by the Deployer.
 
-Organic produce carries a **30–50% price premium**, incentivising fraud. Paper certificates are easily forged, and consumers have no verifiable proof of farm origin or pesticide-free lab testing.
+## Tech Stack
 
-## Solution
+- **Smart Contracts**: Solidity, Hardhat, OpenZeppelin (AccessControl, Pausable)
+- **Frontend**: React, TypeScript, Vite, React Router
+- **Web3 Integration**: wagmi, viem
+- **Decentralized Storage**: Pinata (IPFS) with a secure Express proxy server
+- **Styling**: Vanilla CSS with CSS Variables for a clean, organic UI
 
-AgriLedger tracks organic produce through **3 milestones on the Polygon Amoy blockchain**:
+## Prerequisites
 
-1. **🌱 Harvest Log** — Farmer records crop details, GPS-tagged photo on IPFS
-2. **🔬 Lab Certification** — Licensed lab uploads pesticide-free test report with keccak256 hash integrity
-3. **📦 Hub Receipt** — Distributor confirms delivery at the distribution hub
+- Node.js (v18+)
+- MetaMask browser extension
+- A free [Pinata](https://pinata.cloud) account (for IPFS uploads)
 
-Consumers **scan a QR code** on packaging to view the verified lifecycle — no wallet or login needed.
+## Setup & Installation
+
+### 1. Clone & Install
+```bash
+git clone <your-repo>
+cd agriledger
+
+# Install Smart Contract dependencies
+cd contracts
+npm install
+
+# Install Frontend dependencies
+cd ../web
+npm install
+
+# Install Server dependencies
+cd ../server
+npm install
+```
+
+### 2. Environment Variables
+Create a `.env` file in the `web` directory containing your Pinata API keys:
+```env
+PINATA_API_KEY=your_api_key_here
+PINATA_SECRET_API_KEY=your_secret_key_here
+PINATA_JWT=your_jwt_here
+```
+
+### 3. Local Blockchain Setup
+Open a terminal and start the Hardhat local node:
+```bash
+cd contracts
+npx hardhat node
+```
+
+In a second terminal, deploy the smart contract and seed the initial test data:
+```bash
+cd contracts
+npx hardhat run scripts/deploy.ts --network localhost
+npx hardhat run scripts/seed.ts --network localhost
+```
+
+### 4. Start the Application
+You need to run both the IPFS proxy server and the Vite frontend.
+
+Open a terminal for the server:
+```bash
+cd web
+node server.js
+```
+
+Open another terminal for the frontend:
+```bash
+cd web
+npm run dev
+```
+
+Visit `http://localhost:5173` in your browser.
+
+## Using the dApp
+1. Ensure your MetaMask is connected to the **Localhost 8545** network.
+2. Import the Hardhat test accounts into MetaMask using their private keys.
+3. **Admin (Account 0)**: Go to `/admin` to register Farmers and Labs.
+4. **Farmer (Account 1)**: Go to `/farmer` to log new harvests and upload photos.
+5. **Lab (Account 2)**: Go to `/lab` to certify harvests and upload PDF lab reports.
+6. **Consumer**: Go to `/verify` (or the homepage) to track batches!
 
 ## Architecture
-
-```mermaid
-graph TB
-    subgraph Chain["Polygon Amoy (80002)"]
-        SC["AgriLedger.sol"]
-    end
-    subgraph IPFS
-        PIN["Pinata"]
-    end
-    subgraph API["Vercel Serverless"]
-        UP["Upload API"]
-    end
-    subgraph UI["React Frontend"]
-        VP["Verify Page (no wallet)"]
-        DASH["Dashboards (wallet)"]
-    end
-
-    VP -->|publicClient| SC
-    VP -->|fetch report| PIN
-    DASH -->|wagmi tx| SC
-    DASH -->|upload| UP
-    UP -->|pin| PIN
-```
-
-## Stack
-
-| Layer | Technology |
-|---|---|
-| Smart Contract | Solidity ^0.8.24, OpenZeppelin v5, Hardhat |
-| Chain | Polygon Amoy (chainId 80002) |
-| Storage | IPFS via Pinata |
-| Upload API | Vercel serverless function |
-| Frontend | Vite + React + TypeScript, wagmi + viem |
-| Design | "Botanical Archive" — warm paper, forest ink, specimen labels |
-
-## Quick Start
-
-```bash
-# 1. Install dependencies
-npm install
-cd web && npm install && cd ..
-
-# 2. Copy env and fill in values
-cp .env.example .env
-
-# 3. Compile and test the contract
-npm run compile
-npm test
-
-# 4. Run the health check
-npm run doctor
-
-# 5. Start the frontend
-cd web && npm run dev
-```
-
-## Test Results
-
-- **70 tests passing** — full coverage of role access, state machine, input validation, revocation, pause mechanics, ETH rejection
-- Target: 100% line and branch coverage
-
-## Role Matrix
-
-| Role | Can Do |
-|---|---|
-| Admin | Register/remove actors, pause/unpause, revoke batches |
-| Farmer | Log harvests with photo + GPS + assigned lab |
-| Lab | Certify batches (approve/reject) with report hash |
-| Distributor | Record hub receipt for approved batches |
-| Consumer | Scan QR, verify batch — **no wallet needed** |
-
-## Stage Machine
-
-```
-Harvested → LabApproved → AtHub
-         ↘ LabRejected
-         
-Any stage → Revoked (by admin or assigned lab)
-```
-
-## License
-
-MIT
+See `docs/architecture.md` for a deep dive into the system design, role-based access control, and IPFS integration strategy.

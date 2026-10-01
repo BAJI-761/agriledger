@@ -76,7 +76,7 @@ async function main() {
 
   // 5. Wallet balances
   const walletChecks = [
-    { name: "Admin/Deployer", key: "DEPLOYER_PRIVATE_KEY", threshold: 0.2 },
+    { name: "Admin/Deployer", key: "DEPLOYER_PRIVATE_KEY", threshold: 0.05 },
     { name: "Farmer", key: "FARMER_PRIVATE_KEY", threshold: 0.05 },
     { name: "Lab", key: "LAB_PRIVATE_KEY", threshold: 0.05 },
     { name: "Distributor", key: "DISTRIBUTOR_PRIVATE_KEY", threshold: 0.05 },

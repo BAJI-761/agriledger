@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ShieldCheck, ShieldAlert, Clock, OctagonX, SearchX, MapPin, ExternalLink, Sprout, FlaskConical, Warehouse } from "lucide-react";
+import { ShieldCheck, ShieldAlert, Clock, OctagonX, SearchX, ExternalLink, Sprout, FlaskConical, Warehouse } from "lucide-react";
 import { publicClient } from "../lib/chainClient";
 import { formatDate, formatCoord, shortenAddress, stageName } from "../lib/format";
 import { explorerUrl } from "../config/chain";
@@ -291,6 +291,66 @@ export default function VerifyBatch() {
               </section>
             )}
 
+            {/* Farm Photo */}
+            {timeline && timeline.batch.photoCID && (timeline.batch.photoCID.startsWith("Qm") || timeline.batch.photoCID.startsWith("baf")) && (
+              <section style={{ marginBottom: "var(--space-8)" }}>
+                <h2 style={{ fontSize: "var(--text-h3)", marginBottom: "var(--space-4)" }}>Farm Photo</h2>
+                <div style={{
+                  background: "var(--surface)", border: "1px solid var(--line)",
+                  borderRadius: "var(--radius-lg)", overflow: "hidden",
+                }}>
+                  <img 
+                    src={`https://ipfs.io/ipfs/${timeline.batch.photoCID}`} 
+                    alt="Farm harvest" 
+                    style={{ width: "100%", height: "auto", display: "block" }} 
+                  />
+                </div>
+              </section>
+            )}
+
+            {/* Lab Report & Integrity Check */}
+            {timeline && timeline.cert?.reportCID && (timeline.cert.reportCID.startsWith("Qm") || timeline.cert.reportCID.startsWith("baf")) && (
+              <section style={{ marginBottom: "var(--space-8)" }}>
+                <h2 style={{ fontSize: "var(--text-h3)", marginBottom: "var(--space-4)" }}>Lab Report</h2>
+                <div style={{
+                  background: "var(--surface)", border: "1px solid var(--line)",
+                  borderRadius: "var(--radius-lg)", padding: "var(--space-6)",
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
+                      <FlaskConical size={20} color="var(--forest-700)" />
+                      <span style={{ fontWeight: 600 }}>Chemical Analysis Report</span>
+                    </div>
+                    <a href={`https://ipfs.io/ipfs/${timeline.cert.reportCID}`} target="_blank" rel="noopener noreferrer" style={{
+                      display: "inline-flex", alignItems: "center", gap: "var(--space-1)",
+                      padding: "var(--space-2) var(--space-3)", background: "var(--forest-50)",
+                      color: "var(--forest-700)", borderRadius: "var(--radius-md)", fontSize: "var(--text-small)",
+                      textDecoration: "none", fontWeight: 600
+                    }}>
+                      View PDF <ExternalLink size={14} />
+                    </a>
+                  </div>
+                  
+                  <div style={{ background: "var(--paper)", padding: "var(--space-4)", borderRadius: "var(--radius-md)", border: "1px solid var(--line)" }}>
+                    <p className="text-label" style={{ marginBottom: "var(--space-2)" }}>Integrity Check</p>
+                    <p style={{ fontSize: "var(--text-small)", color: "var(--ink-muted)", marginBottom: "var(--space-2)" }}>
+                      The cryptographic hash of the document stored on IPFS must match the hash recorded on the blockchain by the lab.
+                    </p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)", fontFamily: "var(--font-mono)", fontSize: "0.75rem", wordBreak: "break-all" }}>
+                      <div>
+                        <strong>On-chain Hash:</strong><br/>
+                        <span style={{ color: "var(--forest-700)" }}>{timeline.cert.reportHash}</span>
+                      </div>
+                      <div>
+                        <strong>IPFS Document:</strong><br/>
+                        <span>{timeline.cert.reportCID}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* Technical Details (collapsed) */}
             {timeline && (
               <details style={{
@@ -317,7 +377,7 @@ export default function VerifyBatch() {
                   </div>
                   <div>
                     <span className="text-label">Chain</span>
-                    <div>Polygon Amoy (80002)</div>
+                    <div>Localhost (31337)</div>
                   </div>
                   {timeline.batch.metadataCID && (
                     <div>

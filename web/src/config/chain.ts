@@ -3,6 +3,7 @@
  * Used by wagmi (wallet-connected pages) and viem publicClient (consumer verify page).
  */
 import { defineChain } from "viem";
+import { AMOY_RPC_URL } from "./env";
 
 export const polygonAmoy = defineChain({
   id: 80002,
@@ -14,7 +15,7 @@ export const polygonAmoy = defineChain({
   },
   rpcUrls: {
     default: {
-      http: [import.meta.env.VITE_AMOY_RPC_URL || "https://rpc-amoy.polygon.technology"],
+      http: [AMOY_RPC_URL],
     },
   },
   blockExplorers: {

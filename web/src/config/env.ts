@@ -5,7 +5,7 @@
 
 /** Public RPC URL for read-only access (consumer verify page, no wallet) */
 export const AMOY_RPC_URL =
-  import.meta.env.VITE_AMOY_RPC_URL || "https://rpc-amoy.polygon.technology";
+  import.meta.env.VITE_AMOY_RPC_URL || "https://polygon-amoy.drpc.org";
 
 /** Pinata dedicated gateway domain (e.g. "your-name.mypinata.cloud") */
 export const PINATA_GATEWAY =

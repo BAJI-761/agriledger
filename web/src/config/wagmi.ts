@@ -4,13 +4,12 @@
  */
 import { http, createConfig } from "wagmi";
 import { injected } from "wagmi/connectors";
-import { polygonAmoy } from "./chain";
-import { AMOY_RPC_URL } from "./env";
+import { hardhat } from "wagmi/chains";
 
 export const wagmiConfig = createConfig({
-  chains: [polygonAmoy],
+  chains: [hardhat],
   connectors: [injected()],
   transports: {
-    [polygonAmoy.id]: http(AMOY_RPC_URL),
+    [hardhat.id]: http("http://127.0.0.1:8545"),
   },
 });

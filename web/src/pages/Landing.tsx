@@ -1,5 +1,39 @@
 import { Link } from "react-router-dom";
 import { Sprout, FlaskConical, Warehouse, ShieldCheck, ArrowRight, QrCode } from "lucide-react";
+import { useReadContract } from "wagmi";
+import agriledgerAbi from "../config/abi/AgriLedger.json";
+import deployment from "../config/deployment.json";
+
+function StatsBand() {
+  const { data: counts } = useReadContract({
+    address: deployment.address as `0x${string}`,
+    abi: agriledgerAbi,
+    functionName: "stageCounts",
+  }) as { data: bigint[] | undefined };
+
+  const harvested = counts ? Number(counts[0]) : "—";
+  const labApproved = counts ? Number(counts[1]) : "—";
+  const atHub = counts ? Number(counts[3]) : "—";
+
+  return (
+    <div style={{
+      display: "flex", gap: "var(--space-8)", justifyContent: "center", flexWrap: "wrap",
+    }}>
+      {[
+        { label: "Batches Logged", value: harvested, icon: <Sprout size={20} /> },
+        { label: "Lab Verified", value: labApproved, icon: <ShieldCheck size={20} /> },
+        { label: "At Distribution", value: atHub, icon: <Warehouse size={20} /> },
+      ].map((stat, i) => (
+        <div key={i} style={{ minWidth: "120px" }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-h1)", fontWeight: 600 }}>{stat.value}</div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "var(--space-1)", opacity: 0.8, fontSize: "var(--text-small)" }}>
+            {stat.icon} {stat.label}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function Landing() {
   return (
@@ -97,22 +131,7 @@ export default function Landing() {
         padding: "var(--space-12) var(--space-4)", textAlign: "center",
       }}>
         <h2 style={{ color: "var(--surface)", marginBottom: "var(--space-8)" }}>Live on the ledger</h2>
-        <div style={{
-          display: "flex", gap: "var(--space-8)", justifyContent: "center", flexWrap: "wrap",
-        }}>
-          {[
-            { label: "Batches Logged", icon: <Sprout size={20} /> },
-            { label: "Lab Verified", icon: <ShieldCheck size={20} /> },
-            { label: "At Distribution", icon: <Warehouse size={20} /> },
-          ].map((stat, i) => (
-            <div key={i} style={{ minWidth: "120px" }}>
-              <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-h1)", fontWeight: 600 }}>—</div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "var(--space-1)", opacity: 0.8, fontSize: "var(--text-small)" }}>
-                {stat.icon} {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
+        <StatsBand />
       </section>
 
       {/* ── For Actors ───────────────────────── */}
