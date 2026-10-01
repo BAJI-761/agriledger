@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Environment (NEVER commit secrets)
+.env
+web/.env
+
+# Hardhat
+cache/
+artifacts/
+typechain-types/
+coverage/
+coverage.json
+gasReporterOutput.json
+
+# Vite / React build
+web/dist/
+web/.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Vercel
+.vercel/
+
+# Misc
+*.log
+npm-debug.log*

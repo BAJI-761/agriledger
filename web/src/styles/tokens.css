@@ -1,0 +1,79 @@
+/* ═══════════════════════════════════════════════════════════════
+   AgriLedger Design Tokens — "Botanical Archive" Theme
+   No hard-coded colours, radii, or font sizes outside this file.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Paper & Ink ─────────────────────────────────────────── */
+  --paper:        #F7F3EA;
+  --surface:      #FFFDF8;
+  --sand:         #EDE6D6;
+  --line:         #D9D0BC;
+  --line-strong:  #B9AD93;
+  --ink:          #1E1A14;
+  --ink-muted:    #5C5446;
+
+  /* ── Brand: Deep Forest ──────────────────────────────────── */
+  --forest-900:   #14301F;
+  --forest-700:   #1F4D2E;
+  --forest-600:   #2E6A3F;
+  --forest-100:   #DDEBDD;
+  --forest-50:    #EEF5EC;
+
+  /* ── Status: Harvest (Pending / Awaiting) ────────────────── */
+  --harvest-700:  #7A4E08;
+  --harvest-500:  #C28A1B;
+  --harvest-100:  #F6E7C3;
+
+  /* ── Status: Clay (Failed / Recalled) ────────────────────── */
+  --clay-700:     #8E2D23;
+  --clay-600:     #A2352A;
+  --clay-100:     #F5DAD5;
+
+  /* ── Shape ───────────────────────────────────────────────── */
+  --radius-sm:    8px;
+  --radius-md:    12px;
+  --radius-lg:    18px;
+  --radius-pill:  999px;
+
+  /* ── Elevation ───────────────────────────────────────────── */
+  --shadow-paper: 0 1px 0 var(--line),
+                  0 10px 24px -14px rgba(30, 26, 20, 0.28);
+
+  /* ── Typography ──────────────────────────────────────────── */
+  --font-display: "Fraunces Variable", "Fraunces", Georgia, serif;
+  --font-body:    "DM Sans Variable", "DM Sans", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+
+  /* ── Fluid Type Scale (clamp) ────────────────────────────── */
+  --text-display: clamp(2.5rem, 4vw + 1rem, 4.5rem);
+  --text-h1:      clamp(2rem, 3vw + 0.5rem, 3.5rem);
+  --text-h2:      clamp(1.5rem, 2vw + 0.5rem, 2.25rem);
+  --text-h3:      clamp(1.25rem, 1.5vw + 0.5rem, 1.5rem);
+  --text-body:    clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
+  --text-small:   0.875rem;
+  --text-label:   0.75rem;
+
+  /* ── Motion ──────────────────────────────────────────────── */
+  --ease:         cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-fast:     150ms;
+  --dur:          250ms;
+
+  /* ── Spacing (4px base) ──────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* ── Max Widths ──────────────────────────────────────────── */
+  --max-content:  1152px;
+  --max-verify:   560px;
+  --max-prose:    65ch;
+}
